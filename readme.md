@@ -1,0 +1,173 @@
+Laravel Database Extension
+==========================
+
+Includes some extensions/improvements to the Database section of Laravel Framework 5.4+
+
+* [Installation](#installation)
+* [Usage](#usage)
+    - [Natural sort](#natural-sort)
+    - [Default model sort](#default-model-sort)
+    - [Joins using relationships](#joins-using-relationships)
+
+Installation
+------------
+
+With Composer:
+
+```sh
+composer require axn/laravel-database-extension
+```
+
+In Laravel 5.5 the service provider is automatically included.
+In older versions of the framework, simply add this service provider to the array
+of providers in `config/app.php`:
+
+```php
+// config/app.php
+
+'provider' => [
+    //...
+    Axn\Illuminate\ServiceProvider::class,
+    //...
+];
+```
+
+Usage
+-----
+
+Add trait `Axn\Illuminate\Database\Eloquent\ModelTrait` to models:
+
+```php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Axn\Illuminate\Database\Eloquent\ModelTrait;
+
+class User extends Model
+{
+    use ModelTrait;
+
+    // ...
+}
+```
+
+### Natural sort
+
+Method `orderByNatural` has been added to QueryBuilder (macro) for naturel sorting
+(see: http://kumaresan-drupal.blogspot.fr/2012/09/natural-sorting-in-mysql-or.html).
+Use it like `orderBy`.
+
+Exemple:
+
+```php
+DB::table('appartements')->orderByNatural('numero')->get();
+
+// Descendant
+DB::table('appartements')->orderByNatural('numero', 'desc')->get();
+```
+
+### Default model sort
+
+Add the attribute `$orderBy` to the model if you want to have select results
+automatically sorted:
+
+```php
+protected $orderBy = 'nom_champ';
+
+// OR
+protected $orderBy = [
+    'nom_champ1' => 'option',
+    'nom_champ2' => 'option',
+    ...
+];
+```
+
+`option` can be :
+
+- asc
+- desc
+- natural
+- natural_asc *(same as "natural")*
+- natural_desc
+
+Example:
+
+```php
+class User extends Model
+{
+    use ModelTrait;
+
+    protected $orderBy = [
+        'lastname'  => 'asc',
+        'firstname' => 'desc',
+    ];
+}
+```
+
+If you don't want the default sort applied, simply call `disableDefaultOrderBy()` on the model:
+
+```php
+$users = User::disableDefaultOrderBy()->get();
+```
+
+Note that the default sort is automatically disabled if you manually set ORDER BY clause.
+
+### Joins using relationships
+
+This is the most important feature of this package: you can do joins using Eloquent relationships!
+
+WARNING: only BelongsTo, HasOne, HasMany, MorphOne and MorphMany relations are supported.
+So, if you want to use BelongsToMany, you have to go with the HasMany/BelongsTo relations
+to/from the pivot table.
+
+Example:
+
+```php
+// instead of doing joinRel('roles') (User belongs-to-many Role)
+User::joinRel('userHasRoles') // User has-many UserHasRole
+    ->joinRel('userHasRoles.role') // UserHasRole belongs-to Role
+    ->get();
+
+// with aliases:
+User::alias('u')
+    ->joinRel('userHasRoles', 'uhr')
+    ->joinRel('uhr.role', 'r')
+    ->get();
+```
+
+You may also want to use:
+
+- leftJoinRel()
+- rightJoinRel()
+
+Or if the model uses SoftDeletes and you want to include trashed records:
+
+- joinRelWithTrashed()
+- leftJoinRelWithTrashed()
+- rightJoinRelWithTrashed()
+
+And to add additionnal criteria:
+
+```php
+User::joinRel('userHasRoles', function($join) {
+        $join->where('is_main', 1);
+    })
+    ->joinRel('userHasRoles.role')
+    ->get();
+```
+
+Note that additionnal criteria are automatically added if they are defined on the relation:
+
+```php
+class User extends Model
+{
+    use ModelTrait;
+
+    // joinRel('mainAddress', 'a') will do:
+    // join `addresses` as `a` on `a`.`user_id` = `users`.`id` and `a`.`is_main` = 1
+    public function mainAddress()
+    {
+        return $this->hasOne('addresses')->where('is_main', 1);
+    }
+}
+```

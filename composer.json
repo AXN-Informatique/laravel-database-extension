@@ -1,0 +1,30 @@
+{
+    "name": "axn/laravel-database-extension",
+    "description": "Extension of the database section of the Laravel framework",
+    "homepage": "https://github.com/AXN-Informatique/laravel-database-extension",
+    "support": {
+        "issues": "https://github.com/AXN-Informatique/laravel-database-extension/issues"
+    },
+    "authors": [
+        {
+            "name": "AXN Informatique",
+            "email": "developpement@axn.fr"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "laravel/framework": "5.4.*|5.5.*|5.6.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Axn\\Illuminate\\Database\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Axn\\Illuminate\\Database\\ServiceProvider"
+            ]
+        }
+    }
+}
