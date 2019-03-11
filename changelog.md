@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.0.0 (2019-03-11)
+------------------
+
+- Drop support for Laravel < 5.8 
+- Replace getForeignKey method call by getForeignKeyName 
+
 1.2.0 (2019-03-07)
 ------------------
 

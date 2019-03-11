@@ -1,7 +1,7 @@
 Laravel Database Extension
 ==========================
 
-Includes some extensions/improvements to the Database section of Laravel Framework 5.4+
+Includes some extensions/improvements to the Database section of Laravel Framework
 
 * [Installation](#installation)
 * [Usage](#usage)
@@ -16,20 +16,6 @@ With Composer:
 
 ```sh
 composer require axn/laravel-database-extension
-```
-
-In Laravel 5.5 the service provider is automatically included.
-In older versions of the framework, simply add this service provider to the array
-of providers in `config/app.php`:
-
-```php
-// config/app.php
-
-'provider' => [
-    //...
-    Axn\Illuminate\ServiceProvider::class,
-    //...
-];
 ```
 
 Usage
