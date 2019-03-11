@@ -183,7 +183,7 @@ class JoinRelBuilder
         elseif ($relation instanceof BelongsTo) {
             return [
                 $relation->getRelated()->getQualifiedKeyName(),
-                $relation->getParent()->getTable().'.'.$relation->getForeignKey()
+                $relation->getParent()->getTable().'.'.$relation->getForeignKeyName()
             ];
         }
 
