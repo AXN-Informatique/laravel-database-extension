@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.1.1 (2019-03-20)
+------------------
+
+- Moving the "whereLike" macro to the right place
+- Register macro in the boot() method instead of the register() one
+
 2.1.0 (2019-03-20)
 ------------------
 
