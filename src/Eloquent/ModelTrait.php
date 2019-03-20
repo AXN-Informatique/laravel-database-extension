@@ -5,6 +5,40 @@ namespace Axn\Illuminate\Database\Eloquent;
 trait ModelTrait
 {
     /**
+     * Original table when table is replaced by an alias.
+     *
+     * @var string|null
+     */
+    private $originalTable = null;
+
+    /**
+     * Get the original table associated with the model.
+     *
+     * @return string
+     */
+    public function getOriginalTable()
+    {
+        return $this->originalTable ?: $this->getTable();
+    }
+
+    /**
+     * Create a new instance of the given model.
+     *
+     * @param  array  $attributes
+     * @param  bool  $exists
+     * @param  string|null  $alias
+     * @return static
+     */
+    public function newInstance($attributes = [], $exists = false, $alias = null)
+    {
+        $instance = parent::newInstance($attributes, $exists);
+        
+        $instance->originalTable = $this->getOriginalTable();
+        
+        return $instance->setTable($alias ?: $instance->originalTable);
+    }
+    
+    /**
      * Returns a new instance of the extended Eloquent Builder.
      *
      * @param  \Illuminate\Database\Query\Builder $query
@@ -22,6 +56,6 @@ trait ModelTrait
      */
     public function getOrderBy()
     {
-        return isset($this->orderBy) ? $this->orderBy : null;
+        return $this->orderBy ?? null;
     }
 }

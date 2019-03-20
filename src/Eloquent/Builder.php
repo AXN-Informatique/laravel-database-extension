@@ -45,25 +45,18 @@ class Builder extends BaseEloquentBuilder
     }
 
     /**
-     * Modifie l'alias de la table utilisée dans la clause "from".
+     * Remplace le nom de table par un alias.
+     * Une nouvelle instance du Builder est retournée.
      *
      * @param  string $alias
      * @return Builder
      */
     public function alias($alias)
     {
-        $table = $this->model->getTable();
-        $this->model->setTable($alias);
-
-        $query = $this->model->newQuery();
-        $query->from("$table as $alias");
-
-        return $query;
+        $model = $this->model->newInstance([], false, $alias);
+        
+        return $model->from($model->getOriginalTable().' as '.$alias);
     }
-
-    // ------------------------------------------------------------------------
-    // JOIN USING RELATIONSHIPS
-    // ------------------------------------------------------------------------
 
     /**
      * Effectue une jointure en utilisant la relation définie sur le modèle,
@@ -187,10 +180,6 @@ class Builder extends BaseEloquentBuilder
 
         return $added ? $values : parent::addUpdatedAtColumn($values);
     }
-
-    // ------------------------------------------------------------------------
-    // HELPERS
-    // ------------------------------------------------------------------------
 
     /**
      * Crée et retourne l'instance du JoinRel Builder.
