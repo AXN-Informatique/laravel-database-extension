@@ -1,13 +1,14 @@
 Laravel Database Extension
 ==========================
 
-Includes some extensions/improvements to the Database section of Laravel Framework 5.4+
+Includes some extensions/improvements to the Database section of Laravel Framework
 
 * [Installation](#installation)
 * [Usage](#usage)
     - [Natural sort](#natural-sort)
     - [Default model sort](#default-model-sort)
     - [Joins using relationships](#joins-using-relationships)
+    - [Query builder whereLike macro](#query-builder-wherelike-macro)
 
 Installation
 ------------
@@ -16,20 +17,6 @@ With Composer:
 
 ```sh
 composer require axn/laravel-database-extension
-```
-
-In Laravel 5.5 the service provider is automatically included.
-In older versions of the framework, simply add this service provider to the array
-of providers in `config/app.php`:
-
-```php
-// config/app.php
-
-'provider' => [
-    //...
-    Axn\Illuminate\ServiceProvider::class,
-    //...
-];
 ```
 
 Usage
@@ -170,4 +157,44 @@ class User extends Model
         return $this->hasOne('addresses')->where('is_main', 1);
     }
 }
+```
+
+### Query builder whereLike macro
+
+Source : https://murze.be/searching-models-using-a-where-like-query-in-laravel
+
+A replacement of this:
+
+```php
+User::query()
+   ->where('name', 'LIKE', "%{$searchTerm}%")
+   ->orWhere('email', 'LIKE', "%{$searchTerm}%")
+   ->get();
+```
+
+By that:
+
+```php
+User::whereLike(['name', 'email'], $searchTerm)->get();
+```
+
+Or more advanced, a replacement of this:
+
+```php
+Post::query()
+   ->where('name', 'LIKE', "%{$searchTerm}%")
+   ->orWhere('text', 'LIKE', "%{$searchTerm}%")
+   ->orWhereHas('author', function ($query) use ($searchTerm) {
+        $query->where('name', 'LIKE', "%{$searchTerm}%");
+   })
+   ->orWhereHas('tags', function ($query) use ($searchTerm) {
+        $query->where('name', 'LIKE', "%{$searchTerm}%");
+   })
+   ->get();
+```
+
+By that:
+
+```php
+Post::whereLike(['name', 'text', 'author.name', 'tags.name'], $searchTerm)->get();
 ```

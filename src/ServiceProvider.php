@@ -2,20 +2,18 @@
 
 namespace Axn\Illuminate\Database;
 
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Illuminate\Database\Connection;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
     public function register()
     {
         $this->replaceMySqlConnection();
+    }
 
+    public function boot()
+    {
         require __DIR__.'/query-builder-macros.php';
     }
 
