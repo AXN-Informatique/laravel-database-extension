@@ -1,11 +1,16 @@
 Changelog
 =========
 
+2.1.0 (2019-03-20)
+------------------
+
+- Add an Eloquent "whereLike" query builder macro
+
 2.0.0 (2019-03-11)
 ------------------
 
-- Drop support for Laravel < 5.8 
-- Replace getForeignKey method call by getForeignKeyName 
+- Drop support for Laravel < 5.8
+- Replace getForeignKey method call by getForeignKeyName
 
 1.2.0 (2019-03-07)
 ------------------
