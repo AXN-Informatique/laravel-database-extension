@@ -9,6 +9,7 @@ Includes some extensions/improvements to the Database section of Laravel Framewo
     - [Default model sort](#default-model-sort)
     - [Joins using relationships](#joins-using-relationships)
     - [Query builder whereLike macro](#query-builder-wherelike-macro)
+* [Soft deletes](#soft-deletes)
 
 Installation
 ------------
@@ -198,3 +199,31 @@ By that:
 ```php
 Post::whereLike(['name', 'text', 'author.name', 'tags.name'], $searchTerm)->get();
 ```
+
+Soft deletes
+------------
+
+Our Soft Deletes trait extends the Eloquent one.
+
+This allows us to provide the `scopeWithoutTrashedExcept` method :
+
+```php
+$postTypes = PostType::withoutTrashedExcept($post->post_type_id)->get();
+```
+
+To use it, add the trait `Axn\Illuminate\Database\Eloquent\SoftDeletes` to models:
+
+```php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Axn\Illuminate\Database\Eloquent\SoftDeletes;
+
+class User extends Model
+{
+    use SoftDeletes;
+
+    // ...
+}
+```
+
