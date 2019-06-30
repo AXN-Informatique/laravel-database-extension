@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.2.1 (2019-06-30)
+------------------
+
+- Fix and document "whereLike" macro wich only work on Eloquent Query Builder
+
 2.2.0 (2019-04-30)
 ------------------
 

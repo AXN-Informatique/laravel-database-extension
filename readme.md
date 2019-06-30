@@ -160,9 +160,11 @@ class User extends Model
 }
 ```
 
-### Query builder whereLike macro
+### Eloquent Query builder whereLike macro
 
 Source : https://murze.be/searching-models-using-a-where-like-query-in-laravel
+
+**Warning!** This only works correctly on instances of the *Eloquent Query Builder*, not on the generic Query Builder.
 
 A replacement of this:
 
