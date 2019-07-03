@@ -164,7 +164,7 @@ class User extends Model
 
 Source : https://murze.be/searching-models-using-a-where-like-query-in-laravel
 
-**Warning!** This only works correctly on instances of the *Eloquent Query Builder*, not on the generic Query Builder.
+**Warning!** This only works on instances of the *Eloquent Builder*, not on the generic Query Builder.
 
 A replacement of this:
 

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Illuminate\Database\Eloquent\Builder as EloquentQueryBuilder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -30,20 +30,20 @@ QueryBuilder::macro(
 );
 
 // Add an Eloquent "whereLike" query builder macro
-EloquentQueryBuilder::macro('whereLike', function ($attributes, $searchTerm) {
+EloquentBuilder::macro('whereLike', function ($attributes, $searchTerm) {
     $searchTerm = str_replace(' ', '%', $searchTerm);
 
-    $this->where(function (EloquentQueryBuilder $query) use ($attributes, $searchTerm) {
+    $this->where(function (EloquentBuilder $query) use ($attributes, $searchTerm) {
         foreach (Arr::wrap($attributes) as $attribute) {
             $query->when(Str::contains($attribute, '.'),
-                function (EloquentQueryBuilder $query) use ($attribute, $searchTerm) {
+                function (EloquentBuilder $query) use ($attribute, $searchTerm) {
                     list($relationName, $relationAttribute) = explode('.', $attribute);
 
-                    $query->orWhereHas($relationName, function (EloquentQueryBuilder $query) use ($relationAttribute, $searchTerm) {
+                    $query->orWhereHas($relationName, function (EloquentBuilder $query) use ($relationAttribute, $searchTerm) {
                         $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
                     });
                 },
-                function (EloquentQueryBuilder $query) use ($attribute, $searchTerm) {
+                function (EloquentBuilder $query) use ($attribute, $searchTerm) {
                     $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
                 }
             );

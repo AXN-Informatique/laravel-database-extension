@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.2.2 (2019-07-03)
+------------------
+
+- Rename query-builder-macros.php into macros.php
+- Rename EloquentQueryBuilder into EloquentBuilder alias
+
 2.2.1 (2019-06-30)
 ------------------
 

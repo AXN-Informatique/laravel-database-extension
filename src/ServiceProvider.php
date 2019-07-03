@@ -14,7 +14,7 @@ class ServiceProvider extends BaseServiceProvider
 
     public function boot()
     {
-        require __DIR__.'/query-builder-macros.php';
+        require __DIR__.'/macros.php';
     }
 
     /**
