@@ -8,10 +8,21 @@ trait SoftDeletes
 {
     use EloquentSoftDeletes;
 
-    public function scopeWithoutTrashedExcept($query, $exceptId)
+    public function scopeWithoutTrashedExcept($query, $exceptId = null)
     {
-        return $query
-            ->withoutTrashed()
-            ->orWhere($this->getKeyName(), $exceptId);
+        // Replace :
+        //  $query->where(function($query) use ($exceptId){
+        //
+        // By :
+        //  $query->where(function() use ($query, $exceptId){
+        //
+        // If we do not do that the builder loses his scopes...
+
+        $query->where(function() use ($query, $exceptId){
+            $query->withoutTrashed();
+            $query->when($exceptId, function($query, $exceptId){
+                $query->orWhere($this->getKeyName(), $exceptId);
+            });
+        });
     }
 }

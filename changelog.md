@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.2.3 (2019-10-29)
+------------------
+
+- $exceptId could be null in SoftDeletes::scopeWithoutTrashedExcept() method
+
 2.2.2 (2019-07-03)
 ------------------
 
