@@ -20,35 +20,38 @@ QueryBuilder::macro(
         $column    = $this->grammar->wrap($column);
         $direction = strtolower($direction) == 'asc' ? 'asc' : 'desc';
 
-
         return $this->orderByRaw(
               "$column + 0 <> 0 ".($direction == 'asc' ? 'desc' : 'asc').", "
             . "$column + 0 $direction, "
+            . "length($column) $direction, "
             . "$column $direction"
         );
     }
 );
 
 // Add an Eloquent "whereLike" query builder macro
-EloquentBuilder::macro('whereLike', function ($attributes, $searchTerm) {
-    $searchTerm = str_replace(' ', '%', $searchTerm);
+EloquentBuilder::macro(
+    'whereLike',
+    function ($attributes, $searchTerm) {
+        $searchTerm = str_replace(' ', '%', $searchTerm);
 
-    $this->where(function (EloquentBuilder $query) use ($attributes, $searchTerm) {
-        foreach (Arr::wrap($attributes) as $attribute) {
-            $query->when(Str::contains($attribute, '.'),
-                function (EloquentBuilder $query) use ($attribute, $searchTerm) {
-                    list($relationName, $relationAttribute) = explode('.', $attribute);
+        $this->where(function (EloquentBuilder $query) use ($attributes, $searchTerm) {
+            foreach (Arr::wrap($attributes) as $attribute) {
+                $query->when(Str::contains($attribute, '.'),
+                    function (EloquentBuilder $query) use ($attribute, $searchTerm) {
+                        list($relationName, $relationAttribute) = explode('.', $attribute);
 
-                    $query->orWhereHas($relationName, function (EloquentBuilder $query) use ($relationAttribute, $searchTerm) {
-                        $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
-                    });
-                },
-                function (EloquentBuilder $query) use ($attribute, $searchTerm) {
-                    $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
-                }
-            );
-        }
-    });
+                        $query->orWhereHas($relationName, function (EloquentBuilder $query) use ($relationAttribute, $searchTerm) {
+                            $query->where($relationAttribute, 'like', "%{$searchTerm}%");
+                        });
+                    },
+                    function (EloquentBuilder $query) use ($attribute, $searchTerm) {
+                        $query->orWhere($attribute, 'like', "%{$searchTerm}%");
+                    }
+                );
+            }
+        });
 
-    return $this;
-});
+        return $this;
+    }
+);
