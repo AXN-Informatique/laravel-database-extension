@@ -13,11 +13,6 @@ use Illuminate\Database\Query\JoinClause;
 class JoinRelBuilder
 {
     /**
-     * Nom du trait utilisé par le modèle pour gérer les soft deletes.
-     */
-    const SOFT_DELETES_TRAIT = 'Illuminate\Database\Eloquent\SoftDeletes';
-
-    /**
      * Instance du modèle.
      *
      * @var Model
@@ -148,7 +143,7 @@ class JoinRelBuilder
                 $join->where($morphType, '=', $relation->getMorphClass());
             }
 
-            if (!$withTrashed && in_array(static::SOFT_DELETES_TRAIT, class_uses($relation->getRelated()))) {
+            if (!$withTrashed && method_exists($relation->getRelated(), 'getQualifiedDeletedAtColumn')) {
                 $join->whereNull($relation->getRelated()->getQualifiedDeletedAtColumn());
             }
 
