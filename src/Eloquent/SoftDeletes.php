@@ -21,7 +21,11 @@ trait SoftDeletes
         $query->where(function() use ($query, $exceptId){
             $query->withoutTrashed();
             $query->when($exceptId, function($query, $exceptId){
-                $query->orWhere($this->getKeyName(), $exceptId);
+                if (is_array($exceptId)) {
+                    $query->orWhereIn($this->getQualifiedKeyName(), $exceptId);
+                } else {
+                    $query->orWhere($this->getQualifiedKeyName(), $exceptId);
+                }
             });
         });
     }
