@@ -1,10 +1,16 @@
 Changelog
 =========
 
-2.4.0 (2020-03-04)
+2.5.0 (2020-03-04)
 ------------------
 
 - Add support for Laravel 7
+
+2.4.0 (2020-01-31)
+------------------
+
+- Support array for except id in softDelete trait
+- Replace getKeyName() by getQualifiedKeyName() in softDelete trait
 
 2.3.0 (2019-12-29)
 ------------------
