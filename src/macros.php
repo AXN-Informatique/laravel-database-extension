@@ -1,5 +1,7 @@
 <?php
 
+use Axn\Illuminate\Database\Eloquent\Mixins\JoinRelMixin;
+use Axn\Illuminate\Database\Eloquent\Mixins\WhereHasInMixin;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Arr;
@@ -16,7 +18,7 @@ use Illuminate\Support\Str;
  */
 QueryBuilder::macro(
     'orderByNatural',
-    function($column, $direction = 'asc') {
+    function ($column, $direction = 'asc') {
         $column    = $this->grammar->wrap($column);
         $direction = strtolower($direction) == 'asc' ? 'asc' : 'desc';
 
@@ -29,7 +31,15 @@ QueryBuilder::macro(
     }
 );
 
-// Add an Eloquent "whereLike" query builder macro
+/**
+ * Searching models using a where like query.
+ * 
+ * @see https://freek.dev/1182-searching-models-using-a-where-like-query-in-laravel
+ * 
+ * @param  string|array $attributes
+ * @param  string       $searchTerm
+ * @return \Illuminate\Database\Query\Builder
+ */
 EloquentBuilder::macro(
     'whereLike',
     function ($attributes, $searchTerm) {
@@ -37,21 +47,26 @@ EloquentBuilder::macro(
 
         $this->where(function (EloquentBuilder $query) use ($attributes, $searchTerm) {
             foreach (Arr::wrap($attributes) as $attribute) {
-                $query->when(Str::contains($attribute, '.'),
-                    function (EloquentBuilder $query) use ($attribute, $searchTerm) {
-                        list($relationName, $relationAttribute) = explode('.', $attribute);
+                if (Str::contains($attribute, '.')) {
+                    list($relationName, $relationAttribute) = explode('.', $attribute);
 
-                        $query->orWhereHas($relationName, function (EloquentBuilder $query) use ($relationAttribute, $searchTerm) {
-                            $query->where($relationAttribute, 'like', "%{$searchTerm}%");
-                        });
-                    },
-                    function (EloquentBuilder $query) use ($attribute, $searchTerm) {
-                        $query->orWhere($attribute, 'like', "%{$searchTerm}%");
-                    }
-                );
+                    $query->orWhereHas($relationName, function (EloquentBuilder $query) use ($relationAttribute, $searchTerm) {
+                        $query->where($relationAttribute, 'like', "%{$searchTerm}%");
+                    });
+                } else {
+                    $query->orWhere($attribute, 'like', "%{$searchTerm}%");
+                }
             }
         });
 
         return $this;
     }
 );
+
+
+// Registering macros using mixin classes
+// https://liamhammett.com/laravel-mixins-KEzjmLrx
+
+EloquentBuilder::mixin(new JoinRelMixin);
+
+EloquentBuilder::mixin(new WhereHasInMixin);
