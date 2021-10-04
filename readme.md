@@ -5,11 +5,13 @@ Includes some extensions/improvements to the Database section of Laravel Framewo
 
 * [Installation](#installation)
 * [Usage](#usage)
-    - [Natural sort](#natural-sort)
-    - [Default model sort](#default-model-sort)
+    - [Natural sorting](#natural-sorting)
+    - [Default order](#default-order)
     - [Joins using relationships](#joins-using-relationships)
-    - [Query builder whereLike macro](#query-builder-wherelike-macro)
-* [Soft deletes](#soft-deletes)
+    - [Eloquent whereHasIn macro](#eloquent-wherehasin-macro)
+    - [Eloquent whereLike macro](#eloquent-wherelike-macro)
+    - [SoftDeletes withoutTrashedExcept scope](#softdeletes-withouttrashedexcept-scope)
+
 
 Installation
 ------------
@@ -23,82 +25,80 @@ composer require axn/laravel-database-extension
 Usage
 -----
 
-Add trait `Axn\Illuminate\Database\Eloquent\ModelTrait` to models:
+### Natural sorting
 
-```php
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-use Axn\Illuminate\Database\Eloquent\ModelTrait;
-
-class User extends Model
-{
-    use ModelTrait;
-
-    // ...
-}
-```
-
-### Natural sort
-
-Method `orderByNatural` has been added to QueryBuilder (macro) for naturel sorting
+Method `orderByNatural` has been added to QueryBuilder (macro) for natural sorting
 (see: http://kumaresan-drupal.blogspot.fr/2012/09/natural-sorting-in-mysql-or.html).
 Use it like `orderBy`.
 
-Exemple:
+Example:
 
 ```php
 DB::table('appartements')->orderByNatural('numero')->get();
 
 // Descendant
 DB::table('appartements')->orderByNatural('numero', 'desc')->get();
+// or
+DB::table('appartements')->orderByNaturalDesc('numero')->get();
 ```
 
-### Default model sort
 
-Add the attribute `$orderBy` to the model if you want to have select results
-automatically sorted:
+### Default order
+
+Add the global scope `DefaultOrderScope` to the model if you want to have select
+results automatically sorted:
 
 ```php
-protected $orderBy = 'nom_champ';
+use Axn\Illuminate\Database\Eloquent\DefaultOrderScope;
 
-// OR
-protected $orderBy = [
-    'nom_champ1' => 'option',
-    'nom_champ2' => 'option',
-    ...
-];
+class MyModel extends Model
+{
+    protected static function booted()
+    {
+        static::addGlobalScope(new DefaultOrderScope([
+            'column' => 'option',
+        ]));
+    }
+}
 ```
 
-`option` can be :
+`option` can be:
 
-- asc
-- desc
-- natural
-- natural_asc *(same as "natural")*
-- natural_desc
+- 'asc'
+- 'desc'
+- 'natural' *(apply `orderByNatural()`)*
+- 'natural_asc' *(same as 'natural')*
+- 'natural_desc' *(same as 'natural' but descendant)*
+- 'raw' *(apply `orderByRaw()`)*
+
+If you don't precise option, it will be "asc" by default.
 
 Example:
 
 ```php
+use Axn\Illuminate\Database\Eloquent\DefaultOrderScope;
+
 class User extends Model
 {
-    use ModelTrait;
-
-    protected $orderBy = [
-        'lastname'  => 'asc',
-        'firstname' => 'desc',
-    ];
+    protected static function booted()
+    {
+        static::addGlobalScope(new DefaultOrderScope([
+            'lastname'  => 'asc',
+            'firstname' => 'desc',
+        ]));
+    }
 }
 ```
 
-If you don't want the default sort applied, simply call `disableDefaultOrderBy()` on the model:
+If you don't want the default order applied, simply use the Eloquent method
+`withoutGlobalScope()` on the model:
 
 ```php
-$users = User::disableDefaultOrderBy()->get();
+$users = User::withoutGlobalScope(DefaultOrderScope::class)->get();
 ```
 
-Note that the default sort is automatically disabled if you manually set ORDER BY clause.
+Note that the default order is automatically disabled if you manually set `ORDER BY` clause.
+
 
 ### Joins using relationships
 
@@ -134,23 +134,21 @@ Or if the model uses SoftDeletes and you want to include trashed records:
 - leftJoinRelWithTrashed()
 - rightJoinRelWithTrashed()
 
-And to add additionnal criteria:
+And to add extra criteria:
 
 ```php
-User::joinRel('userHasRoles', function($join) {
+User::joinRel('userHasRoles', function ($join) {
         $join->where('is_main', 1);
     })
     ->joinRel('userHasRoles.role')
     ->get();
 ```
 
-Note that additionnal criteria are automatically added if they are defined on the relation:
+Note that extra criteria are automatically added if they are defined on the relation:
 
 ```php
 class User extends Model
 {
-    use ModelTrait;
-
     // joinRel('mainAddress', 'a') will do:
     // join `addresses` as `a` on `a`.`user_id` = `users`.`id` and `a`.`is_main` = 1
     public function mainAddress()
@@ -160,9 +158,58 @@ class User extends Model
 }
 ```
 
-### Eloquent Query builder whereLike macro
 
-Source : https://murze.be/searching-models-using-a-where-like-query-in-laravel
+### Eloquent whereHasIn macro
+
+If you have performance issues with the `whereHas` method, you can use `whereHasIn` instead.
+
+It uses `in` clause instead of `exists` to check existence:
+
+```php
+// where exists (select * from `comments` where `comments`.`post_id` = `posts`.`id`)
+Post::whereHas('comments')->get();
+
+// where `posts`.`id` in (select `comments`.`post_id` from `comments`)
+Post::whereHasIn('comments')->get();
+```
+
+You can use a callback to add extra criteria:
+
+```php
+// where `posts`.`id` in (
+//     select `comments`.`post_id` from `comments`
+//     where `comments`.`content` like "A%"
+// )
+Post::whereHasIn('comments', function ($query) {
+    $query->where('content', 'like', "A%");
+})->get();
+```
+
+Note that it does not support "dot" notation, but you can use joins:
+
+```php
+// where `posts`.`id` in (
+//     select `comments`.`post_id` from `comments`
+//     inner join `users` as `author` on `author`.`id` = `comments`.`author_id`
+//     where `author`.`lastname` like "A%"
+// )
+Post::whereHasIn('comments', function ($query) {
+    $query
+        ->joinRel('author')
+        ->where('author.lastname', 'like', "A%");
+})->get();
+```
+
+You may also want to use:
+
+- orWhereHasIn()
+- whereDoesntHaveIn()
+- orWhereDoesntHaveIn()
+
+
+### Eloquent whereLike macro
+
+Source: https://murze.be/searching-models-using-a-where-like-query-in-laravel
 
 **Warning!** This only works on instances of the *Eloquent Builder*, not on the generic Query Builder.
 
@@ -170,8 +217,8 @@ A replacement of this:
 
 ```php
 User::query()
-   ->where('name', 'LIKE', "%{$searchTerm}%")
-   ->orWhere('email', 'LIKE', "%{$searchTerm}%")
+   ->where('name', 'like', "%{$searchTerm}%")
+   ->orWhere('email', 'like', "%{$searchTerm}%")
    ->get();
 ```
 
@@ -185,13 +232,13 @@ Or more advanced, a replacement of this:
 
 ```php
 Post::query()
-   ->where('name', 'LIKE', "%{$searchTerm}%")
-   ->orWhere('text', 'LIKE', "%{$searchTerm}%")
+   ->where('name', 'like', "%{$searchTerm}%")
+   ->orWhere('text', 'like', "%{$searchTerm}%")
    ->orWhereHas('author', function ($query) use ($searchTerm) {
-        $query->where('name', 'LIKE', "%{$searchTerm}%");
+        $query->where('name', 'like', "%{$searchTerm}%");
    })
    ->orWhereHas('tags', function ($query) use ($searchTerm) {
-        $query->where('name', 'LIKE', "%{$searchTerm}%");
+        $query->where('name', 'like', "%{$searchTerm}%");
    })
    ->get();
 ```
@@ -202,15 +249,16 @@ By that:
 Post::whereLike(['name', 'text', 'author.name', 'tags.name'], $searchTerm)->get();
 ```
 
-Soft deletes
-------------
 
-Our Soft Deletes trait extends the Eloquent one.
+### SoftDeletes withoutTrashedExcept scope
 
-This allows us to provide the `scopeWithoutTrashedExcept` method :
+Our `SoftDeletes` trait extends the Eloquent one to provide the `withoutTrashedExcept` scope :
 
 ```php
 $postTypes = PostType::withoutTrashedExcept($post->post_type_id)->get();
+
+// you also can provide multiple ids:
+$postTypes = PostType::withoutTrashedExcept([1, 2, 3])->get();
 ```
 
 To use it, add the trait `Axn\Illuminate\Database\Eloquent\SoftDeletes` to models:
@@ -228,4 +276,3 @@ class User extends Model
     // ...
 }
 ```
-
