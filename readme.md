@@ -13,7 +13,6 @@ Includes some extensions/improvements to the Database section of Laravel Framewo
     - [SoftDeletes withoutTrashedExcept scope](#softdeletes-withouttrashedexcept-scope)
 
 
-
 Installation
 ------------
 
