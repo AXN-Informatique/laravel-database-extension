@@ -14,13 +14,15 @@ class WhereHasInMixin
     /**
      * Like "whereHas()" but using "in" clause instead of "exists".
      *
-     * @param  string   $relationName
-     * @param  \Closure $callback
+     * @param  string        $relationName
+     * @param  \Closure|null $callback
+     * @param  string        $boolean
+     * @param  bool          $not
      * @return void
      */
     public function whereHasIn()
     {
-        return function ($relationName, \Closure $callback, $boolean = 'and', $not = false) {
+        return function ($relationName, \Closure $callback = null, $boolean = 'and', $not = false) {
 
             $relation = Relation::noConstraints(function () use ($relationName) {
                 return $this->model->{$relationName}();
@@ -28,7 +30,9 @@ class WhereHasInMixin
     
             $relationSubQuery = $relation->getQuery();
             
-            $callback($relationSubQuery);
+            if ($callback !== null) {
+                $callback($relationSubQuery);
+            }
     
             if ($relation instanceof HasOneOrMany) {
                 $relationKey1 = $relation->getParent()->getQualifiedKeyName();
@@ -62,13 +66,13 @@ class WhereHasInMixin
     /**
      * Like "orWhereHas()" but using "in" clause instead of "exists".
      *
-     * @param  string   $relationName
-     * @param  \Closure $callback
+     * @param  string        $relationName
+     * @param  \Closure|null $callback
      * @return void
      */
     public function orWhereHasIn()
     {
-        return function ($relationName, \Closure $callback) {
+        return function ($relationName, \Closure $callback = null) {
             return $this->whereHasIn($relationName, $callback, 'or');
         };
     }
@@ -76,13 +80,13 @@ class WhereHasInMixin
     /**
      * Like "whereDoesntHave()" but using "in" clause instead of "exists".
      *
-     * @param  string   $relationName
-     * @param  \Closure $callback
+     * @param  string        $relationName
+     * @param  \Closure|null $callback
      * @return void
      */
     public function whereDoesntHaveIn()
     {
-        return function ($relationName, \Closure $callback) {
+        return function ($relationName, \Closure $callback = null) {
             return $this->whereHasIn($relationName, $callback, 'and', true);
         };
     }
@@ -90,13 +94,13 @@ class WhereHasInMixin
     /**
      * Like "orWhereDoesntHave()" but using "in" clause instead of "exists".
      *
-     * @param  string   $relationName
-     * @param  \Closure $callback
+     * @param  string        $relationName
+     * @param  \Closure|null $callback
      * @return void
      */
     public function orWhereDoesntHaveIn()
     {
-        return function ($relationName, \Closure $callback) {
+        return function ($relationName, \Closure $callback = null) {
             return $this->whereHasIn($relationName, $callback, 'or', true);
         };
     }
