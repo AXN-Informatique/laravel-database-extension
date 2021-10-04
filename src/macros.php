@@ -32,6 +32,19 @@ QueryBuilder::macro(
 );
 
 /**
+ * Natural sorting, descendant.
+ *
+ * @param  string $column
+ * @return \Illuminate\Database\Query\Builder
+ */
+QueryBuilder::macro(
+    'orderByNaturalDesc',
+    function ($column) {
+        return $this->orderByNatural($column, 'desc');
+    }
+);
+
+/**
  * Searching models using a where like query.
  * 
  * @see https://freek.dev/1182-searching-models-using-a-where-like-query-in-laravel
