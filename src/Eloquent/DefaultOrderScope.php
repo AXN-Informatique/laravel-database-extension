@@ -41,16 +41,16 @@ class DefaultOrderScope implements Scope
             if (is_int($column)) {
                 $builder->orderBy($model->getTable().'.'.$option);
                 
-            } elseif ($option == 'asc' || $option == 'desc') {
+            } elseif ($option === 'asc' || $option === 'desc') {
                 $builder->orderBy($model->getTable().'.'.$column, $option);
 
-            } elseif ($option == 'natural' || $option == 'natural_asc') {
+            } elseif ($option === 'natural' || $option === 'natural_asc') {
                 $builder->orderByNatural($model->getTable().'.'.$column);
 
-            } elseif ($option == 'natural_desc') {
+            } elseif ($option === 'natural_desc') {
                 $builder->orderByNatural($model->getTable().'.'.$column, 'desc');
 
-            } elseif ($option == 'raw') {
+            } elseif ($option === 'raw') {
                 $builder->orderByRaw($column);
 
             } else {

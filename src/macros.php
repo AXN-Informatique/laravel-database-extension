@@ -20,10 +20,10 @@ QueryBuilder::macro(
     'orderByNatural',
     function ($column, $direction = 'asc') {
         $column    = $this->grammar->wrap($column);
-        $direction = strtolower($direction) == 'asc' ? 'asc' : 'desc';
+        $direction = strtolower($direction) === 'asc' ? 'asc' : 'desc';
 
         return $this->orderByRaw(
-              "$column + 0 <> 0 ".($direction == 'asc' ? 'desc' : 'asc').", "
+              "$column + 0 <> 0 ".($direction === 'asc' ? 'desc' : 'asc').", "
             . "$column + 0 $direction, "
             . "length($column) $direction, "
             . "$column $direction"
