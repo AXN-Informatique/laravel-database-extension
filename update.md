@@ -4,6 +4,10 @@ Updates
 From version 2.x to version 3.x
 -------------------------------
 
+This package now requires at least **PHP 8** and **Laravel 8**.
+To install this new version you must update your application accordingly.
+
+
 ### Remove ModelTrait from model classes
 
 In version 2.x, the trait `Axn\Illuminate\Database\Eloquent\ModelTrait` was needed
