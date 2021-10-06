@@ -1,6 +1,17 @@
 Changelog
 =========
 
+3.0.0 (2021-10-06)
+------------------
+
+- Remove support of Laravel 7 and earlier.
+- Remove support of PHP 7 and earlier.
+- Remove ModelTrait trait and Eloquent Builder extension
+- Remove MySqlConnection extension
+- Add DefaultOrderScope global scope
+- Add whereHasIn macro
+- Add orderByNaturalDesc macro
+
 2.6.0 (2020-09-25)
 ------------------
 
