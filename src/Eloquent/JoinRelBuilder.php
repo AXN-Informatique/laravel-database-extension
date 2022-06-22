@@ -73,7 +73,7 @@ class JoinRelBuilder
         $this->models[$alias] = $relation->getRelated();
 
         $table = $relation->getRelated()->getTable().' as '.$alias;
-        
+
         $relation->getRelated()->setTable($alias);
         $relation->getParent()->setTable($parentAlias);
 
@@ -85,7 +85,7 @@ class JoinRelBuilder
     }
 
     /**
-     * Add condition to join clause using Eloquent relationship. 
+     * Add condition to join clause using Eloquent relationship.
      *
      * Supports: HasOne, HasMany, MorphOne, MorphMany, BelongsTo
      *
@@ -98,11 +98,11 @@ class JoinRelBuilder
     protected function addCondition(JoinClause $join, Relation $relation, $callback, $withTrashed)
     {
         if ($relation instanceof HasOneOrMany) {
-            $relationKey1 = $relation->getParent()->getQualifiedKeyName();
+            $relationKey1 = $relation->getParent()->getTable().'.'.$relation->getLocalKeyName();
             $relationKey2 = $relation->getRelated()->getTable().'.'.$relation->getForeignKeyName();
 
         } elseif ($relation instanceof BelongsTo) {
-            $relationKey1 = $relation->getRelated()->getQualifiedKeyName();
+            $relationKey1 = $relation->getRelated()->getTable().'.'.$relation->getOwnerKeyName();
             $relationKey2 = $relation->getParent()->getTable().'.'.$relation->getForeignKeyName();
 
         } else {

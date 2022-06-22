@@ -27,33 +27,33 @@ class WhereHasInMixin
             $relation = Relation::noConstraints(function () use ($relationName) {
                 return $this->model->{$relationName}();
             });
-    
+
             $relationSubQuery = $relation->getQuery();
-            
+
             if ($callback !== null) {
                 $callback($relationSubQuery);
             }
-    
+
             if ($relation instanceof HasOneOrMany) {
-                $relationKey1 = $relation->getParent()->getQualifiedKeyName();
+                $relationKey1 = $relation->getParent()->getTable().'.'.$relation->getLocalKeyName();
                 $relationKey2 = $relation->getRelated()->getTable().'.'.$relation->getForeignKeyName();
-    
+
             } elseif ($relation instanceof BelongsTo) {
-                $relationKey1 = $relation->getRelated()->getQualifiedKeyName();
+                $relationKey1 = $relation->getRelated()->getTable().'.'.$relation->getOwnerKeyName();
                 $relationKey2 = $relation->getParent()->getTable().'.'.$relation->getForeignKeyName();
-    
+
             } elseif ($relation instanceof BelongsToMany) {
                 $relationKey1 = $relation->getQualifiedParentKeyName();
                 $relationKey2 = $relation->getQualifiedForeignPivotKeyName();
-    
+
             } elseif ($relation instanceof HasManyThrough) {
                 $relationKey1 = $relation->getQualifiedLocalKeyName();
                 $relationKey2 = $relation->getQualifiedFirstKeyName();
-    
+
             } else {
                 throw new WhereHasInException('Relation '.get_class($relation).' not supported.');
             }
-    
+
             return $this->whereIn(
                 $relationKey1,
                 $relationSubQuery->select($relationKey2),

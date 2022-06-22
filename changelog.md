@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.1.1 (2022-06-22)
+------------------
+
+- Fix joinRel and wherehasIn when key is not primary key
+
 3.1.0 (2022-02-11)
 ------------------
 
