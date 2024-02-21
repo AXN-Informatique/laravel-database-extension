@@ -104,7 +104,7 @@ Note that the default order is automatically disabled if you manually set `ORDER
 
 This is the most important feature of this package: you can do joins using Eloquent relationships!
 
-WARNING: only BelongsTo, HasOne, HasMany, MorphOne and MorphMany relations are supported.
+**WARNING:** only BelongsTo, HasOne, HasMany, MorphOne and MorphMany relations are supported.
 So, if you want to use BelongsToMany, you have to go with the HasMany/BelongsTo relations
 to/from the pivot table.
 
@@ -156,6 +156,32 @@ class User extends Model
         return $this->hasOne('addresses')->where('is_main', 1);
     }
 }
+```
+
+**WARNING:** an instance of JoinRelBuilder is created and attached to the Eloquent Builder instance
+via WeakMap to handle this feature. If you ever clone the Builder instance, note that there is
+no cloning of the attached JoinRelBuilder instance. This can be a problem if you use "joinRel"
+on the cloned instance with a reference to an alias created in the original instance.
+
+For example:
+
+```php
+$originalBuilder = User::joinRel('userHasRoles');
+
+$clonedBuilder = clone $originalBuilder;
+
+// Produces error: No model with alias "userHasRoles"
+$clonedBuilder->joinRel('userHasRoles.role');
+```
+
+If you need to handle this case, use the "cloneWithJoinRelBuilder" method instead of clone:
+
+```php
+$originalBuilder = User::joinRel('userHasRoles');
+
+$clonedBuilder = $originalBuilder->cloneWithJoinRelBuilder();
+
+$clonedBuilder->joinRel('userHasRoles.role');
 ```
 
 

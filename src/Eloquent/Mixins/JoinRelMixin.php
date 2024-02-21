@@ -17,7 +17,7 @@ class JoinRelMixin
     {
         return function ($alias) {
             $this->model->setTable($alias);
-            
+
             return $this->from((new $this->model)->getTable().' as '.$alias);
         };
     }
@@ -33,12 +33,17 @@ class JoinRelMixin
     public function joinRel()
     {
         return function ($relationName, $alias = null, $callback = null, $type = 'inner', $withTrashed = false) {
+            global $_joinRelBuildersWeakMap;
 
-            if (!isset($this->joinRelBuilder)) {
-                $this->joinRelBuilder = new JoinRelBuilder($this->model);
+            if (! isset($_joinRelBuildersWeakMap)) {
+                $_joinRelBuildersWeakMap = new \WeakMap;
             }
 
-            $this->joinRelBuilder->apply($this, $relationName, $alias, $callback, $type, $withTrashed);
+            if (! isset($_joinRelBuildersWeakMap[$this])) {
+                $_joinRelBuildersWeakMap[$this] = new JoinRelBuilder($this->model);
+            }
+
+            $_joinRelBuildersWeakMap[$this]->apply($this, $relationName, $alias, $callback, $type, $withTrashed);
 
             return $this;
         };
@@ -116,6 +121,24 @@ class JoinRelMixin
     {
         return function ($relationName, $alias = null, $callback = null) {
             return $this->joinRel($relationName, $alias, $callback, 'right', true);
+        };
+    }
+
+    /**
+     * Clone builder with corresponding JoinRelBuilder instance (in WeakMap).
+     *
+     * @return Builder
+     */
+    public function cloneWithJoinRelBuilder()
+    {
+        return function () {
+            global $_joinRelBuildersWeakMap;
+
+            $clone = clone $this;
+
+            $_joinRelBuildersWeakMap[$clone] = clone $_joinRelBuildersWeakMap[$this];
+
+            return $clone;
         };
     }
 }

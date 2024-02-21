@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.3.0 (2024-02-21)
+------------------
+
+- Use WeakMap instead of dynamic property to store JoinRelBuilder instance and avoid deprecation notice
+- Add cloneWithJoinRelBuilder macro
+
 3.2.0 (2023-02-20)
 ------------------
 

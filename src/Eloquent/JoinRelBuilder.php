@@ -49,7 +49,7 @@ class JoinRelBuilder
             $parentAlias = $query->getModel()->getTable();
         }
 
-        if (!isset($this->models[$parentAlias])) {
+        if (! isset($this->models[$parentAlias])) {
             throw new JoinRelException('No model with alias "'.$parentAlias.'".');
         }
 
@@ -116,7 +116,7 @@ class JoinRelBuilder
             $join->where($morphType, '=', $relation->getMorphClass());
         }
 
-        if (!$withTrashed && method_exists($relation->getRelated(), 'getQualifiedDeletedAtColumn')) {
+        if (! $withTrashed && method_exists($relation->getRelated(), 'getQualifiedDeletedAtColumn')) {
             $join->whereNull($relation->getRelated()->getQualifiedDeletedAtColumn());
         }
 
