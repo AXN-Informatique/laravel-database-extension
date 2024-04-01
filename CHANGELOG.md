@@ -1,11 +1,16 @@
 Changelog
 =========
 
+4.0.1 (2024-04-01)
+------------------
+
+- Fix versions in changelog bellow
+
 4.0.0 (2024-04-01)
 ------------------
 
-- Remove support of Laravel 10 and earlier
-- Remove support of PHP 8.2 and earlier
+- Now requires Laravel 10 or greater
+- Now requires PHP 8.2 or greater
 
 3.3.0 (2024-02-21)
 ------------------
