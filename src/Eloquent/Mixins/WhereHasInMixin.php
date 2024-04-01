@@ -4,12 +4,14 @@ namespace Axn\Illuminate\Database\Eloquent\Mixins;
 
 use Axn\Illuminate\Database\Eloquent\Exceptions\WhereHasInException;
 use Closure;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
+/** @mixin Builder */
 class WhereHasInMixin
 {
     /**
@@ -23,13 +25,13 @@ class WhereHasInMixin
      */
     public function whereHasIn()
     {
-        return function ($relationName, ?Closure $callback = null, $boolean = 'and', $not = false) {
+        return function ($relationName, ?Closure $callback = null, $boolean = 'and', $not = false): Builder {
 
             $relation = Relation::noConstraints(fn () => $this->model->{$relationName}());
 
             $relationSubQuery = $relation->getQuery();
 
-            if ($callback !== null) {
+            if ($callback instanceof Closure) {
                 $callback($relationSubQuery);
             }
 

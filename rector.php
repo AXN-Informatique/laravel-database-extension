@@ -1,11 +1,13 @@
 <?php
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
+use Rector\CodeQuality\Rector\Class_\CompleteDynamicPropertiesRector;
 use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
 use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
 use Rector\CodingStyle\Rector\FuncCall\ArraySpreadInsteadOfArrayMergeRector;
 use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
+use Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector;
 use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 use Rector\Set\ValueObject\SetList;
 use RectorLaravel\Rector\FuncCall\RemoveDumpDataDeadCodeRector;
@@ -55,25 +57,29 @@ return static function (RectorConfig $rectorConfig): void {
         // Ne pas changer les closure et Arrow Function en Static
         StaticClosureRector::class,
         StaticArrowFunctionRector::class,
+
+        // Particularités des classes mixins
+        CompleteDynamicPropertiesRector::class => [__DIR__.'/src/Eloquent/Mixins'],
+        RemoveExtraParametersRector::class => [__DIR__.'/src/Eloquent/Mixins'],
     ]);
 
-    // $rectorConfig->rules([
-    //     EloquentWhereRelationTypeHintingParameterRector::class,
-    //     EloquentWhereTypeHintClosureParameterRector::class,
-    //     OptionalToNullsafeOperatorRector::class,
-    //     RemoveDumpDataDeadCodeRector::class,
-    // ]);
+    $rectorConfig->rules([
+        EloquentWhereRelationTypeHintingParameterRector::class,
+        EloquentWhereTypeHintClosureParameterRector::class,
+        OptionalToNullsafeOperatorRector::class,
+        RemoveDumpDataDeadCodeRector::class,
+    ]);
 
     $rectorConfig->sets([
-        // LaravelSetList::LARAVEL_FACADE_ALIASES_TO_FULL_NAMES,
+        LaravelSetList::LARAVEL_FACADE_ALIASES_TO_FULL_NAMES,
         SetList::PHP_82,
-        // SetList::DEAD_CODE,
-        // SetList::CODE_QUALITY,
-        // SetList::CODING_STYLE,
-        // //SetList::NAMING,
-        // SetList::TYPE_DECLARATION,
-        // //SetList::PRIVATIZATION,
-        // SetList::EARLY_RETURN,
-        // SetList::INSTANCEOF,
+        SetList::DEAD_CODE,
+        SetList::CODE_QUALITY,
+        SetList::CODING_STYLE,
+        //SetList::NAMING,
+        SetList::TYPE_DECLARATION,
+        //SetList::PRIVATIZATION,
+        SetList::EARLY_RETURN,
+        SetList::INSTANCEOF,
     ]);
 };

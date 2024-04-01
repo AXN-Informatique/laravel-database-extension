@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use WeakMap;
 
+/** @mixin Builder */
 class JoinRelMixin
 {
     /**
@@ -17,7 +18,7 @@ class JoinRelMixin
      */
     public function alias()
     {
-        return function ($alias) {
+        return function (string $alias): Builder {
             $this->model->setTable($alias);
 
             return $this->from((new $this->model())->getTable().' as '.$alias);
@@ -30,11 +31,13 @@ class JoinRelMixin
      * @param  string  $relationName
      * @param  string|null  $alias
      * @param  Closure|null  $callback
+     * @param  string  $type
+     * @param  bool  $withTrashed
      * @return Builder
      */
     public function joinRel()
     {
-        return function ($relationName, $alias = null, $callback = null, $type = 'inner', $withTrashed = false) {
+        return function (string $relationName, ?string $alias = null, ?string $callback = null, string $type = 'inner', bool $withTrashed = false): Builder {
             global $_joinRelBuildersWeakMap;
 
             if (! isset($_joinRelBuildersWeakMap)) {

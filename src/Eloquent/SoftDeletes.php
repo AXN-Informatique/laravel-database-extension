@@ -14,9 +14,8 @@ trait SoftDeletes
      * (these records will be retrieved even if they are trashed).
      *
      * @param  int|array[int] $exceptId
-     * @return void
      */
-    public function scopeWithoutTrashedExcept(Builder $query, $exceptId = null)
+    public function scopeWithoutTrashedExcept(Builder $query, $exceptId = null): void
     {
         // Replaced :
         //   $query->where(function ($query) use ($exceptId) {
@@ -25,10 +24,10 @@ trait SoftDeletes
         //
         // If we do not do that, the builder loses his scopes...
 
-        $query->where(function () use ($query, $exceptId) {
+        $query->where(function () use ($query, $exceptId): void {
             $query
                 ->withoutTrashed()
-                ->when($exceptId, function ($query, $exceptId) {
+                ->when($exceptId, function ($query, $exceptId): void {
                     if (\is_array($exceptId)) {
                         $query->orWhereIn($this->getQualifiedKeyName(), $exceptId);
                     } else {

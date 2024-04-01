@@ -37,9 +37,8 @@ class JoinRelBuilder
      * @param  Closure|null  $callback
      * @param  string  $type
      * @param  bool  $withTrashed
-     * @return void
      */
-    public function apply(Builder $query, $relationName, $alias = null, $callback = null, $type = 'inner', $withTrashed = false)
+    public function apply(Builder $query, $relationName, $alias = null, $callback = null, $type = 'inner', $withTrashed = false): void
     {
         if (str_contains($relationName, '.')) {
             [$parentAlias, $relationName] = explode('.', $relationName);
@@ -73,7 +72,7 @@ class JoinRelBuilder
         $relation->getRelated()->setTable($alias);
         $relation->getParent()->setTable($parentAlias);
 
-        $condition = function ($join) use ($relation, $callback, $withTrashed) {
+        $condition = function ($join) use ($relation, $callback, $withTrashed): void {
             $this->addCondition($join, $relation, $callback, $withTrashed);
         };
 
@@ -127,15 +126,12 @@ class JoinRelBuilder
 
     /**
      * Adds extra "where" criteria to join clause.
-     *
-     * @param  string  $alias
-     * @return void
      */
-    protected function addExtraCriteria(JoinClause $join, array $wheres, $alias)
+    protected function addExtraCriteria(JoinClause $join, array $wheres, string $alias): void
     {
         foreach ($wheres as $where) {
             if ($where['type'] === 'Nested') {
-                $join->where(function ($join) use ($where, $alias) {
+                $join->where(function (JoinClause $join) use ($where, $alias): void {
                     $this->addExtraCriteria($join, $where['query']->wheres, $alias);
                 });
             } else {
