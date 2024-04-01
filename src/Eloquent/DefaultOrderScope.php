@@ -16,8 +16,6 @@ class DefaultOrderScope implements Scope
 
     /**
      * Constructor.
-     *
-     * @param array $orders
      */
     public function __construct(array $orders)
     {
@@ -27,8 +25,6 @@ class DefaultOrderScope implements Scope
     /**
      * Apply default "order by" clauses on query.
      *
-     * @param  Builder $builder
-     * @param  Model $model
      * @return void
      */
     public function apply(Builder $builder, Model $model)
@@ -38,9 +34,9 @@ class DefaultOrderScope implements Scope
         }
 
         foreach ($this->orders as $column => $option) {
-            if (is_int($column)) {
+            if (\is_int($column)) {
                 $builder->orderBy($model->getTable().'.'.$option);
-                
+
             } elseif ($option === 'asc' || $option === 'desc') {
                 $builder->orderBy($model->getTable().'.'.$column, $option);
 

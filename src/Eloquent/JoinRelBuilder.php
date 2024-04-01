@@ -22,8 +22,6 @@ class JoinRelBuilder
 
     /**
      * Constructor.
-     *
-     * @param Model $model
      */
     public function __construct(Model $model)
     {
@@ -33,18 +31,17 @@ class JoinRelBuilder
     /**
      * Apply a join clause on a query using an Eloquent relationship.
      *
-     * @param  Builder       $query
-     * @param  string        $relationName
-     * @param  string|null   $alias
-     * @param  \Closure|null $callback
-     * @param  string        $type
-     * @param  boolean       $withTrashed
+     * @param  string  $relationName
+     * @param  string|null  $alias
+     * @param  \Closure|null  $callback
+     * @param  string  $type
+     * @param  bool  $withTrashed
      * @return void
      */
     public function apply(Builder $query, $relationName, $alias = null, $callback = null, $type = 'inner', $withTrashed = false)
     {
         if (strpos($relationName, '.') !== false) {
-            list($parentAlias, $relationName) = explode('.', $relationName);
+            [$parentAlias, $relationName] = explode('.', $relationName);
         } else {
             $parentAlias = $query->getModel()->getTable();
         }
@@ -58,7 +55,7 @@ class JoinRelBuilder
             $alias = null;
         }
 
-        if (!$alias) {
+        if (! $alias) {
             $alias = $relationName;
         }
 
@@ -89,10 +86,8 @@ class JoinRelBuilder
      *
      * Supports: HasOne, HasMany, MorphOne, MorphMany, BelongsTo
      *
-     * @param  JoinClause    $join
-     * @param  Relation      $relation
-     * @param  \Closure|null $callback
-     * @param  boolean       $withTrashed
+     * @param  \Closure|null  $callback
+     * @param  bool  $withTrashed
      * @return \Closure
      */
     protected function addCondition(JoinClause $join, Relation $relation, $callback, $withTrashed)
@@ -106,7 +101,7 @@ class JoinRelBuilder
             $relationKey2 = $relation->getParent()->getTable().'.'.$relation->getForeignKeyName();
 
         } else {
-            throw new JoinRelException('Relation '.get_class($relation).' not supported.');
+            throw new JoinRelException('Relation '.\get_class($relation).' not supported.');
         }
 
         $join->on($relationKey1, '=', $relationKey2);
@@ -134,9 +129,7 @@ class JoinRelBuilder
     /**
      * Adds extra "where" criteria to join clause.
      *
-     * @param  JoinClause $join
-     * @param  array      $wheres
-     * @param  string     $alias
+     * @param  string  $alias
      * @return void
      */
     protected function addExtraCriteria(JoinClause $join, array $wheres, $alias)

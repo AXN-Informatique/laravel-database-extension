@@ -1,6 +1,12 @@
 Updates
 =======
 
+From version 3.x to version 4.x
+-------------------------------
+
+This package now requires at least **PHP 8.2** and **Laravel 10**.
+To install this new version you must update your application accordingly.
+
 From version 2.x to version 3.x
 -------------------------------
 

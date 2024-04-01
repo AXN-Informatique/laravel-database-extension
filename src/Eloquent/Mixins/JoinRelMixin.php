@@ -18,16 +18,16 @@ class JoinRelMixin
         return function ($alias) {
             $this->model->setTable($alias);
 
-            return $this->from((new $this->model)->getTable().' as '.$alias);
+            return $this->from((new $this->model())->getTable().' as '.$alias);
         };
     }
 
     /**
      * Make join using Eloquent relationship.
      *
-     * @param  string        $relationName
-     * @param  string|null   $alias
-     * @param  \Closure|null $callback
+     * @param  string  $relationName
+     * @param  string|null  $alias
+     * @param  \Closure|null  $callback
      * @return Builder
      */
     public function joinRel()
@@ -36,7 +36,7 @@ class JoinRelMixin
             global $_joinRelBuildersWeakMap;
 
             if (! isset($_joinRelBuildersWeakMap)) {
-                $_joinRelBuildersWeakMap = new \WeakMap;
+                $_joinRelBuildersWeakMap = new \WeakMap();
             }
 
             if (! isset($_joinRelBuildersWeakMap[$this])) {
@@ -52,9 +52,9 @@ class JoinRelMixin
     /**
      * Make join using Eloquent relationship and including trashed records.
      *
-     * @param  string        $relationName
-     * @param  string|null   $alias
-     * @param  \Closure|null $callback
+     * @param  string  $relationName
+     * @param  string|null  $alias
+     * @param  \Closure|null  $callback
      * @return Builder
      */
     public function joinRelWithTrashed()
@@ -67,9 +67,9 @@ class JoinRelMixin
     /**
      * Make left join using Eloquent relationship.
      *
-     * @param  string        $relationName
-     * @param  string|null   $alias
-     * @param  \Closure|null $callback
+     * @param  string  $relationName
+     * @param  string|null  $alias
+     * @param  \Closure|null  $callback
      * @return Builder
      */
     public function leftJoinRel()
@@ -82,9 +82,9 @@ class JoinRelMixin
     /**
      * Make left join using Eloquent relationship and including trashed records.
      *
-     * @param  string        $relationName
-     * @param  string|null   $alias
-     * @param  \Closure|null $callback
+     * @param  string  $relationName
+     * @param  string|null  $alias
+     * @param  \Closure|null  $callback
      * @return Builder
      */
     public function leftJoinRelWithTrashed()
@@ -97,9 +97,9 @@ class JoinRelMixin
     /**
      * Make right join using Eloquent relationship.
      *
-     * @param  string        $relationName
-     * @param  string|null   $alias
-     * @param  \Closure|null $callback
+     * @param  string  $relationName
+     * @param  string|null  $alias
+     * @param  \Closure|null  $callback
      * @return Builder
      */
     public function rightJoinRel()
@@ -112,9 +112,9 @@ class JoinRelMixin
     /**
      * Make right join using Eloquent relationship and including trashed records.
      *
-     * @param  string        $relationName
-     * @param  string        $alias
-     * @param  \Closure|null $wheres
+     * @param  string  $relationName
+     * @param  string  $alias
+     * @param  \Closure|null  $wheres
      * @return Builder
      */
     public function rightJoinRelWithTrashed()

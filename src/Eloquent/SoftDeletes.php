@@ -13,7 +13,6 @@ trait SoftDeletes
      * Like "withoutTrashed()" but with the ability of excepting some records
      * (these records will be retrieved even if they are trashed).
      *
-     * @param  Builder        $query
      * @param  int|array[int] $exceptId
      * @return void
      */
@@ -30,7 +29,7 @@ trait SoftDeletes
             $query
                 ->withoutTrashed()
                 ->when($exceptId, function ($query, $exceptId) {
-                    if (is_array($exceptId)) {
+                    if (\is_array($exceptId)) {
                         $query->orWhereIn($this->getQualifiedKeyName(), $exceptId);
                     } else {
                         $query->orWhere($this->getQualifiedKeyName(), $exceptId);

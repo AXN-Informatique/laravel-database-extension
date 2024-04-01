@@ -1,6 +1,12 @@
 Changelog
 =========
 
+4.0.0 (2024-04-01)
+------------------
+
+- Remove support of Laravel 10 and earlier
+- Remove support of PHP 8.2 and earlier
+
 3.3.0 (2024-02-21)
 ------------------
 
@@ -25,8 +31,8 @@ Changelog
 3.0.0 (2021-10-06)
 ------------------
 
-- Remove support of Laravel 7 and earlier.
-- Remove support of PHP 7 and earlier.
+- Remove support of Laravel 7 and earlier
+- Remove support of PHP 7 and earlier
 - Remove ModelTrait trait and Eloquent Builder extension
 - Remove MySqlConnection extension
 - Add DefaultOrderScope global scope
