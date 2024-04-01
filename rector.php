@@ -57,23 +57,23 @@ return static function (RectorConfig $rectorConfig): void {
         StaticArrowFunctionRector::class,
     ]);
 
-    $rectorConfig->rules([
-        EloquentWhereRelationTypeHintingParameterRector::class,
-        EloquentWhereTypeHintClosureParameterRector::class,
-        OptionalToNullsafeOperatorRector::class,
-        RemoveDumpDataDeadCodeRector::class,
-    ]);
+    // $rectorConfig->rules([
+    //     EloquentWhereRelationTypeHintingParameterRector::class,
+    //     EloquentWhereTypeHintClosureParameterRector::class,
+    //     OptionalToNullsafeOperatorRector::class,
+    //     RemoveDumpDataDeadCodeRector::class,
+    // ]);
 
     $rectorConfig->sets([
-        LaravelSetList::LARAVEL_FACADE_ALIASES_TO_FULL_NAMES,
+        // LaravelSetList::LARAVEL_FACADE_ALIASES_TO_FULL_NAMES,
         SetList::PHP_82,
-        SetList::DEAD_CODE,
-        SetList::CODE_QUALITY,
-        SetList::CODING_STYLE,
-        //SetList::NAMING,
-        SetList::TYPE_DECLARATION,
-        //SetList::PRIVATIZATION,
-        SetList::EARLY_RETURN,
-        SetList::INSTANCEOF,
+        // SetList::DEAD_CODE,
+        // SetList::CODE_QUALITY,
+        // SetList::CODING_STYLE,
+        // //SetList::NAMING,
+        // SetList::TYPE_DECLARATION,
+        // //SetList::PRIVATIZATION,
+        // SetList::EARLY_RETURN,
+        // SetList::INSTANCEOF,
     ]);
 };

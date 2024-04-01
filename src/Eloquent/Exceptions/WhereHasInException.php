@@ -2,6 +2,8 @@
 
 namespace Axn\Illuminate\Database\Eloquent\Exceptions;
 
-class WhereHasInException extends \Exception
+use Exception;
+
+class WhereHasInException extends Exception
 {
 }

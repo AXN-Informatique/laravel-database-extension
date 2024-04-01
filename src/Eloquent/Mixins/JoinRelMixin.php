@@ -3,7 +3,9 @@
 namespace Axn\Illuminate\Database\Eloquent\Mixins;
 
 use Axn\Illuminate\Database\Eloquent\JoinRelBuilder;
+use Closure;
 use Illuminate\Database\Eloquent\Builder;
+use WeakMap;
 
 class JoinRelMixin
 {
@@ -27,7 +29,7 @@ class JoinRelMixin
      *
      * @param  string  $relationName
      * @param  string|null  $alias
-     * @param  \Closure|null  $callback
+     * @param  Closure|null  $callback
      * @return Builder
      */
     public function joinRel()
@@ -36,7 +38,7 @@ class JoinRelMixin
             global $_joinRelBuildersWeakMap;
 
             if (! isset($_joinRelBuildersWeakMap)) {
-                $_joinRelBuildersWeakMap = new \WeakMap();
+                $_joinRelBuildersWeakMap = new WeakMap();
             }
 
             if (! isset($_joinRelBuildersWeakMap[$this])) {
@@ -54,14 +56,12 @@ class JoinRelMixin
      *
      * @param  string  $relationName
      * @param  string|null  $alias
-     * @param  \Closure|null  $callback
+     * @param  Closure|null  $callback
      * @return Builder
      */
     public function joinRelWithTrashed()
     {
-        return function ($relationName, $alias = null, $callback = null) {
-            return $this->joinRel($relationName, $alias, $callback, 'inner', true);
-        };
+        return fn ($relationName, $alias = null, $callback = null) => $this->joinRel($relationName, $alias, $callback, 'inner', true);
     }
 
     /**
@@ -69,14 +69,12 @@ class JoinRelMixin
      *
      * @param  string  $relationName
      * @param  string|null  $alias
-     * @param  \Closure|null  $callback
+     * @param  Closure|null  $callback
      * @return Builder
      */
     public function leftJoinRel()
     {
-        return function ($relationName, $alias = null, $callback = null) {
-            return $this->joinRel($relationName, $alias, $callback, 'left');
-        };
+        return fn ($relationName, $alias = null, $callback = null) => $this->joinRel($relationName, $alias, $callback, 'left');
     }
 
     /**
@@ -84,14 +82,12 @@ class JoinRelMixin
      *
      * @param  string  $relationName
      * @param  string|null  $alias
-     * @param  \Closure|null  $callback
+     * @param  Closure|null  $callback
      * @return Builder
      */
     public function leftJoinRelWithTrashed()
     {
-        return function ($relationName, $alias = null, $callback = null) {
-            return $this->joinRel($relationName, $alias, $callback, 'left', true);
-        };
+        return fn ($relationName, $alias = null, $callback = null) => $this->joinRel($relationName, $alias, $callback, 'left', true);
     }
 
     /**
@@ -99,14 +95,12 @@ class JoinRelMixin
      *
      * @param  string  $relationName
      * @param  string|null  $alias
-     * @param  \Closure|null  $callback
+     * @param  Closure|null  $callback
      * @return Builder
      */
     public function rightJoinRel()
     {
-        return function ($relationName, $alias = null, $callback = null) {
-            return $this->joinRel($relationName, $alias, $callback, 'right');
-        };
+        return fn ($relationName, $alias = null, $callback = null) => $this->joinRel($relationName, $alias, $callback, 'right');
     }
 
     /**
@@ -114,14 +108,12 @@ class JoinRelMixin
      *
      * @param  string  $relationName
      * @param  string  $alias
-     * @param  \Closure|null  $wheres
+     * @param  Closure|null  $wheres
      * @return Builder
      */
     public function rightJoinRelWithTrashed()
     {
-        return function ($relationName, $alias = null, $callback = null) {
-            return $this->joinRel($relationName, $alias, $callback, 'right', true);
-        };
+        return fn ($relationName, $alias = null, $callback = null) => $this->joinRel($relationName, $alias, $callback, 'right', true);
     }
 
     /**

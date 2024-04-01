@@ -2,6 +2,8 @@
 
 namespace Axn\Illuminate\Database\Eloquent\Exceptions;
 
-class JoinRelException extends \Exception
+use Exception;
+
+class JoinRelException extends Exception
 {
 }

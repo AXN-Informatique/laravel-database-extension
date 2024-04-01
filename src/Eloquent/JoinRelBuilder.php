@@ -3,6 +3,7 @@
 namespace Axn\Illuminate\Database\Eloquent;
 
 use Axn\Illuminate\Database\Eloquent\Exceptions\JoinRelException;
+use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,14 +34,14 @@ class JoinRelBuilder
      *
      * @param  string  $relationName
      * @param  string|null  $alias
-     * @param  \Closure|null  $callback
+     * @param  Closure|null  $callback
      * @param  string  $type
      * @param  bool  $withTrashed
      * @return void
      */
     public function apply(Builder $query, $relationName, $alias = null, $callback = null, $type = 'inner', $withTrashed = false)
     {
-        if (strpos($relationName, '.') !== false) {
+        if (str_contains($relationName, '.')) {
             [$parentAlias, $relationName] = explode('.', $relationName);
         } else {
             $parentAlias = $query->getModel()->getTable();
@@ -50,7 +51,7 @@ class JoinRelBuilder
             throw new JoinRelException('No model with alias "'.$parentAlias.'".');
         }
 
-        if ($alias instanceof \Closure) {
+        if ($alias instanceof Closure) {
             $callback = $alias;
             $alias = null;
         }
@@ -63,9 +64,7 @@ class JoinRelBuilder
             throw new JoinRelException('Alias "'.$alias.'" already used.');
         }
 
-        $relation = Relation::noConstraints(function () use ($parentAlias, $relationName) {
-            return $this->models[$parentAlias]->{$relationName}();
-        });
+        $relation = Relation::noConstraints(fn () => $this->models[$parentAlias]->{$relationName}());
 
         $this->models[$alias] = $relation->getRelated();
 
@@ -86,9 +85,9 @@ class JoinRelBuilder
      *
      * Supports: HasOne, HasMany, MorphOne, MorphMany, BelongsTo
      *
-     * @param  \Closure|null  $callback
+     * @param  Closure|null  $callback
      * @param  bool  $withTrashed
-     * @return \Closure
+     * @return Closure
      */
     protected function addCondition(JoinClause $join, Relation $relation, $callback, $withTrashed)
     {
@@ -101,7 +100,7 @@ class JoinRelBuilder
             $relationKey2 = $relation->getParent()->getTable().'.'.$relation->getForeignKeyName();
 
         } else {
-            throw new JoinRelException('Relation '.\get_class($relation).' not supported.');
+            throw new JoinRelException('Relation '.$relation::class.' not supported.');
         }
 
         $join->on($relationKey1, '=', $relationKey2);
@@ -121,7 +120,7 @@ class JoinRelBuilder
             $relation->getRelated()->getTable()
         );
 
-        if ($callback instanceof \Closure) {
+        if ($callback instanceof Closure) {
             $callback($join);
         }
     }

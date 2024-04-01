@@ -39,9 +39,7 @@ QueryBuilder::macro(
  */
 QueryBuilder::macro(
     'orderByNaturalDesc',
-    function ($column) {
-        return $this->orderByNatural($column, 'desc');
-    }
+    fn ($column) => $this->orderByNatural($column, 'desc')
 );
 
 /**

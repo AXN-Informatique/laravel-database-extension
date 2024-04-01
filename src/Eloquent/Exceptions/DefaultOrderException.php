@@ -2,6 +2,8 @@
 
 namespace Axn\Illuminate\Database\Eloquent\Exceptions;
 
-class DefaultOrderException extends \Exception
+use Exception;
+
+class DefaultOrderException extends Exception
 {
 }
