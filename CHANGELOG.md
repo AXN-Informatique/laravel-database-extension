@@ -1,6 +1,12 @@
 Changelog
 =========
 
+4.0.2 (2024-04-04)
+------------------
+
+- Fix exception always thrown on DefaultOrderScope
+- Fix parameters type hinting on joinRel macro
+
 4.0.1 (2024-04-01)
 ------------------
 

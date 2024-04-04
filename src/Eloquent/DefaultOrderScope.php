@@ -39,9 +39,9 @@ class DefaultOrderScope implements Scope
                 $builder->orderByNatural($model->getTable().'.'.$column, 'desc');
             } elseif ($option === 'raw') {
                 $builder->orderByRaw($column);
+            } else {
+                throw new DefaultOrderException('Option "'.$option.'" not supported.');
             }
-
-            throw new DefaultOrderException('Option "'.$option.'" not supported.');
         }
     }
 }

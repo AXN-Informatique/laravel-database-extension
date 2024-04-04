@@ -21,11 +21,11 @@ class WhereHasInMixin
      * @param  Closure|null  $callback
      * @param  string  $boolean
      * @param  bool  $not
-     * @return void
+     * @return Builder
      */
     public function whereHasIn()
     {
-        return function ($relationName, ?Closure $callback = null, $boolean = 'and', $not = false): Builder {
+        return function (string $relationName, ?Closure $callback = null, string $boolean = 'and', bool $not = false): Builder {
 
             $relation = Relation::noConstraints(fn () => $this->model->{$relationName}());
 
@@ -69,11 +69,12 @@ class WhereHasInMixin
      *
      * @param  string  $relationName
      * @param  Closure|null  $callback
-     * @return void
+     * @return Builder
      */
     public function orWhereHasIn()
     {
-        return fn ($relationName, ?Closure $callback = null) => $this->whereHasIn($relationName, $callback, 'or');
+        return fn (string $relationName, ?Closure $callback = null)
+            => $this->whereHasIn($relationName, $callback, 'or');
     }
 
     /**
@@ -81,11 +82,12 @@ class WhereHasInMixin
      *
      * @param  string  $relationName
      * @param  Closure|null  $callback
-     * @return void
+     * @return Builder
      */
     public function whereDoesntHaveIn()
     {
-        return fn ($relationName, ?Closure $callback = null) => $this->whereHasIn($relationName, $callback, 'and', true);
+        return fn (string $relationName, ?Closure $callback = null)
+            => $this->whereHasIn($relationName, $callback, 'and', true);
     }
 
     /**
@@ -93,10 +95,11 @@ class WhereHasInMixin
      *
      * @param  string  $relationName
      * @param  Closure|null  $callback
-     * @return void
+     * @return Builder
      */
     public function orWhereDoesntHaveIn()
     {
-        return fn ($relationName, ?Closure $callback = null) => $this->whereHasIn($relationName, $callback, 'or', true);
+        return fn (string $relationName, ?Closure $callback = null)
+            => $this->whereHasIn($relationName, $callback, 'or', true);
     }
 }
