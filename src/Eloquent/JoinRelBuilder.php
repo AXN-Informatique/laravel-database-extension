@@ -32,13 +32,9 @@ class JoinRelBuilder
     /**
      * Apply a join clause on a query using an Eloquent relationship.
      *
-     * @param  string  $relationName
-     * @param  string|null  $alias
-     * @param  Closure|null  $callback
-     * @param  string  $type
-     * @param  bool  $withTrashed
+     * @param  string|Closure|null  $alias
      */
-    public function apply(Builder $query, $relationName, $alias = null, $callback = null, $type = 'inner', $withTrashed = false): void
+    public function apply(Builder $query, string $relationName, $alias = null, ?Closure $callback = null, string $type = 'inner', bool $withTrashed = false): void
     {
         if (str_contains($relationName, '.')) {
             [$parentAlias, $relationName] = explode('.', $relationName);
@@ -83,12 +79,8 @@ class JoinRelBuilder
      * Add condition to join clause using Eloquent relationship.
      *
      * Supports: HasOne, HasMany, MorphOne, MorphMany, BelongsTo
-     *
-     * @param  Closure|null  $callback
-     * @param  bool  $withTrashed
-     * @return Closure
      */
-    protected function addCondition(JoinClause $join, Relation $relation, $callback, $withTrashed)
+    protected function addCondition(JoinClause $join, Relation $relation, ?Closure $callback, bool $withTrashed): void
     {
         if ($relation instanceof HasOneOrMany) {
             $relationKey1 = $relation->getParent()->getTable().'.'.$relation->getLocalKeyName();

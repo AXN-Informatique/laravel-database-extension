@@ -29,7 +29,7 @@ class JoinRelMixin
      * Make join using Eloquent relationship.
      *
      * @param  string  $relationName
-     * @param  string|null  $alias
+     * @param  string|Closure|null  $alias
      * @param  Closure|null  $callback
      * @param  string  $type
      * @param  bool  $withTrashed
@@ -37,7 +37,7 @@ class JoinRelMixin
      */
     public function joinRel()
     {
-        return function (string $relationName, ?string $alias = null, ?string $callback = null, string $type = 'inner', bool $withTrashed = false): Builder {
+        return function (string $relationName, $alias = null, ?Closure $callback = null, string $type = 'inner', bool $withTrashed = false): Builder {
             global $_joinRelBuildersWeakMap;
 
             if (! isset($_joinRelBuildersWeakMap)) {
@@ -58,65 +58,70 @@ class JoinRelMixin
      * Make join using Eloquent relationship and including trashed records.
      *
      * @param  string  $relationName
-     * @param  string|null  $alias
+     * @param  string|Closure|null  $alias
      * @param  Closure|null  $callback
      * @return Builder
      */
     public function joinRelWithTrashed()
     {
-        return fn ($relationName, $alias = null, $callback = null) => $this->joinRel($relationName, $alias, $callback, 'inner', true);
+        return fn (string $relationName, $alias = null, ?Closure $callback = null)
+            => $this->joinRel($relationName, $alias, $callback, 'inner', true);
     }
 
     /**
      * Make left join using Eloquent relationship.
      *
      * @param  string  $relationName
-     * @param  string|null  $alias
+     * @param  string|Closure|null  $alias
      * @param  Closure|null  $callback
      * @return Builder
      */
     public function leftJoinRel()
     {
-        return fn ($relationName, $alias = null, $callback = null) => $this->joinRel($relationName, $alias, $callback, 'left');
+        return fn (string $relationName, $alias = null, ?Closure $callback = null)
+            => $this->joinRel($relationName, $alias, $callback, 'left');
     }
 
     /**
      * Make left join using Eloquent relationship and including trashed records.
      *
      * @param  string  $relationName
-     * @param  string|null  $alias
+     * @param  string|Closure|null  $alias
      * @param  Closure|null  $callback
      * @return Builder
      */
     public function leftJoinRelWithTrashed()
     {
-        return fn ($relationName, $alias = null, $callback = null) => $this->joinRel($relationName, $alias, $callback, 'left', true);
+        return fn (string $relationName, $alias = null, ?Closure $callback = null)
+            => $this->joinRel($relationName, $alias, $callback, 'left', true);
     }
 
     /**
      * Make right join using Eloquent relationship.
      *
      * @param  string  $relationName
-     * @param  string|null  $alias
+     * @param  string|Closure|null  $alias
      * @param  Closure|null  $callback
      * @return Builder
      */
     public function rightJoinRel()
     {
-        return fn ($relationName, $alias = null, $callback = null) => $this->joinRel($relationName, $alias, $callback, 'right');
+        return fn (string $relationName, $alias = null, ?Closure $callback = null)
+            => $this->joinRel($relationName, $alias, $callback, 'right');
     }
 
     /**
      * Make right join using Eloquent relationship and including trashed records.
      *
      * @param  string  $relationName
-     * @param  string  $alias
-     * @param  Closure|null  $wheres
+     * @param  string|Closure|null  $alias
+     * @param  Closure|null  $callback
      * @return Builder
      */
     public function rightJoinRelWithTrashed()
     {
-        return fn ($relationName, $alias = null, $callback = null) => $this->joinRel($relationName, $alias, $callback, 'right', true);
+        return fn (string $relationName, $alias = null, ?Closure $callback = null)
+            => $this->joinRel($relationName, $alias, $callback, 'right', true);
     }
 
     /**
