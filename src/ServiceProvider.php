@@ -37,9 +37,9 @@ class ServiceProvider extends BaseServiceProvider
 
                 return $this->orderByRaw(
                     $column.' + 0 <> 0 '.($direction === 'asc' ? 'desc' : 'asc').', '
-                    .sprintf('%s + 0 %s, ', $column, $direction)
-                    .sprintf('length(%s) %s, ', $column, $direction)
-                    .sprintf('%s %s', $column, $direction)
+                    .\sprintf('%s + 0 %s, ', $column, $direction)
+                    .\sprintf('length(%s) %s, ', $column, $direction)
+                    .\sprintf('%s %s', $column, $direction)
                 );
             }
         );

@@ -1,6 +1,14 @@
 Changelog
 =========
 
+5.0.0 (2025-03-18)
+------------------
+
+- Minimum PHP version increased to 8.4
+- Minimum Laravel version increased to 12
+- Minimum Rector version increased to 2
+- Deprecated `DefaultOrderScope`
+
 4.0.2 (2024-04-04)
 ------------------
 

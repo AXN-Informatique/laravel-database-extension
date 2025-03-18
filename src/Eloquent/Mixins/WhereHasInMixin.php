@@ -73,8 +73,7 @@ class WhereHasInMixin
      */
     public function orWhereHasIn()
     {
-        return fn (string $relationName, ?Closure $callback = null)
-            => $this->whereHasIn($relationName, $callback, 'or');
+        return fn (string $relationName, ?Closure $callback = null) => $this->whereHasIn($relationName, $callback, 'or');
     }
 
     /**
@@ -86,8 +85,7 @@ class WhereHasInMixin
      */
     public function whereDoesntHaveIn()
     {
-        return fn (string $relationName, ?Closure $callback = null)
-            => $this->whereHasIn($relationName, $callback, 'and', true);
+        return fn (string $relationName, ?Closure $callback = null) => $this->whereHasIn($relationName, $callback, 'and', true);
     }
 
     /**
@@ -99,7 +97,6 @@ class WhereHasInMixin
      */
     public function orWhereDoesntHaveIn()
     {
-        return fn (string $relationName, ?Closure $callback = null)
-            => $this->whereHasIn($relationName, $callback, 'or', true);
+        return fn (string $relationName, ?Closure $callback = null) => $this->whereHasIn($relationName, $callback, 'or', true);
     }
 }

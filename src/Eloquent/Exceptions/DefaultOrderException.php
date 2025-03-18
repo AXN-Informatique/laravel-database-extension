@@ -4,6 +4,4 @@ namespace Axn\Illuminate\Database\Eloquent\Exceptions;
 
 use Exception;
 
-class DefaultOrderException extends Exception
-{
-}
+class DefaultOrderException extends Exception {}

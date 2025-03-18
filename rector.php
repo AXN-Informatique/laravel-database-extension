@@ -18,7 +18,7 @@ use RectorLaravel\Set\LaravelSetList;
 
 return static function (RectorConfig $rectorConfig): void {
     // register paths
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     $rectorConfig->paths([
         __DIR__.'/src',
     ]);
@@ -32,7 +32,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importNames();
 
     // cache settings
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
 
     // Ensure file system caching is used instead of in-memory.
     $rectorConfig->cacheClass(FileCacheStorage::class);
@@ -41,7 +41,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->cacheDirectory(__DIR__.'/.rector_cache');
 
     // skip paths and/or rules
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     $rectorConfig->skip([
         // Rector transforme $foo++ en ++$foo et derrière Pint transforme ++$foo en $foo++
         // du coup je désactive, laissant pour le moment la priorité à Pint
@@ -76,9 +76,9 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::DEAD_CODE,
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
-        //SetList::NAMING,
+        // SetList::NAMING,
         SetList::TYPE_DECLARATION,
-        //SetList::PRIVATIZATION,
+        // SetList::PRIVATIZATION,
         SetList::EARLY_RETURN,
         SetList::INSTANCEOF,
     ]);

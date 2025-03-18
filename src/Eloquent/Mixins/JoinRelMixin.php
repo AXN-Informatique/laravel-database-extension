@@ -64,8 +64,7 @@ class JoinRelMixin
      */
     public function joinRelWithTrashed()
     {
-        return fn (string $relationName, $alias = null, ?Closure $callback = null)
-            => $this->joinRel($relationName, $alias, $callback, 'inner', true);
+        return fn (string $relationName, $alias = null, ?Closure $callback = null) => $this->joinRel($relationName, $alias, $callback, 'inner', true);
     }
 
     /**
@@ -78,8 +77,7 @@ class JoinRelMixin
      */
     public function leftJoinRel()
     {
-        return fn (string $relationName, $alias = null, ?Closure $callback = null)
-            => $this->joinRel($relationName, $alias, $callback, 'left');
+        return fn (string $relationName, $alias = null, ?Closure $callback = null) => $this->joinRel($relationName, $alias, $callback, 'left');
     }
 
     /**
@@ -92,8 +90,7 @@ class JoinRelMixin
      */
     public function leftJoinRelWithTrashed()
     {
-        return fn (string $relationName, $alias = null, ?Closure $callback = null)
-            => $this->joinRel($relationName, $alias, $callback, 'left', true);
+        return fn (string $relationName, $alias = null, ?Closure $callback = null) => $this->joinRel($relationName, $alias, $callback, 'left', true);
     }
 
     /**
@@ -106,8 +103,7 @@ class JoinRelMixin
      */
     public function rightJoinRel()
     {
-        return fn (string $relationName, $alias = null, ?Closure $callback = null)
-            => $this->joinRel($relationName, $alias, $callback, 'right');
+        return fn (string $relationName, $alias = null, ?Closure $callback = null) => $this->joinRel($relationName, $alias, $callback, 'right');
     }
 
     /**
@@ -120,8 +116,7 @@ class JoinRelMixin
      */
     public function rightJoinRelWithTrashed()
     {
-        return fn (string $relationName, $alias = null, ?Closure $callback = null)
-            => $this->joinRel($relationName, $alias, $callback, 'right', true);
+        return fn (string $relationName, $alias = null, ?Closure $callback = null) => $this->joinRel($relationName, $alias, $callback, 'right', true);
     }
 
     /**
