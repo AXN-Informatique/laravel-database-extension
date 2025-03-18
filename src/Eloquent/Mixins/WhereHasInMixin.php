@@ -11,7 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-/** @mixin Builder */
+/**
+ * @mixin Builder
+ */
 class WhereHasInMixin
 {
     /**

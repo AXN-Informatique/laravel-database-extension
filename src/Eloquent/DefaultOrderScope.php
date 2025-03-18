@@ -12,16 +12,12 @@ use Illuminate\Database\Eloquent\Scope;
  */
 class DefaultOrderScope implements Scope
 {
-    protected array $orders;
-
     /**
      * Constructor.
      */
-    public function __construct(array $orders)
+    public function __construct(protected array $orders)
     {
         trigger_error('The DefaultOrderScope() global scope should no longer be used, it has been deprecated since version 5.0.0; please implement a dedicated ordered() local scope instead.', E_USER_DEPRECATED);
-
-        $this->orders = $orders;
     }
 
     /**

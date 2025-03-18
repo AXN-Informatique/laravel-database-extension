@@ -29,8 +29,7 @@ class ServiceProvider extends BaseServiceProvider
          * @param  string  $direction
          * @return QueryBuilder
          */
-        QueryBuilder::macro(
-            'orderByNatural',
+        QueryBuilder::macro('orderByNatural',
             function ($column, $direction = 'asc') {
                 $column = $this->grammar->wrap($column);
                 $direction = strtolower($direction) === 'asc' ? 'asc' : 'desc';
@@ -50,8 +49,7 @@ class ServiceProvider extends BaseServiceProvider
          * @param  string  $column
          * @return QueryBuilder
          */
-        QueryBuilder::macro(
-            'orderByNaturalDesc',
+        QueryBuilder::macro('orderByNaturalDesc',
             fn ($column) => $this->orderByNatural($column, 'desc')
         );
     }
@@ -67,8 +65,7 @@ class ServiceProvider extends BaseServiceProvider
          * @param  string  $searchTerm
          * @return EloquentBuilder
          */
-        EloquentBuilder::macro(
-            'whereLike',
+        EloquentBuilder::macro('whereLike',
             function ($attributes, $searchTerm) {
                 $searchTerm = str_replace(' ', '%', $searchTerm);
 

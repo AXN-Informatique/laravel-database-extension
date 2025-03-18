@@ -45,6 +45,8 @@ DB::table('appartements')->orderByNaturalDesc('numero')->get();
 
 ### ~~Default order~~
 
+**Deprecated**
+
 **The `DefaultOrderScope()` global scope should no longer be used, it has been deprecated since version 5.0.0; it will be removed in next major release. Please implement a dedicated local scope instead. For example something like `scopeOrdered()`.**
 
 Add the global scope `DefaultOrderScope` to the model if you want to have select

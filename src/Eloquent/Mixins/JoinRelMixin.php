@@ -7,7 +7,9 @@ use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use WeakMap;
 
-/** @mixin Builder */
+/**
+ * @mixin Builder
+ */
 class JoinRelMixin
 {
     /**
