@@ -27,6 +27,8 @@ Usage
 
 ### Natural sorting
 
+***Caution!** These methods only work on columns that contain only values ​​that begin with numerics.*
+
 Method `orderByNatural` has been added to QueryBuilder (macro) for natural sorting
 (see: http://kumaresan-drupal.blogspot.fr/2012/09/natural-sorting-in-mysql-or.html).
 Use it like `orderBy`.
@@ -41,7 +43,6 @@ DB::table('appartements')->orderByNatural('numero', 'desc')->get();
 // or
 DB::table('appartements')->orderByNaturalDesc('numero')->get();
 ```
-
 
 ### ~~Default order~~
 

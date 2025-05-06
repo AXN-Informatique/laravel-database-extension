@@ -1,6 +1,11 @@
 Changelog
 =========
 
+5.0.1 (2025-05-06)
+------------------
+
+- Added caution in README for Natural sorting macros
+
 5.0.0 (2025-03-18)
 ------------------
 
