@@ -6,7 +6,7 @@ Includes some extensions/improvements to the Database section of Laravel Framewo
 * [Installation](#installation)
 * [Usage](#usage)
     - [Natural sorting](#natural-sorting)
-    - [~~Default order~~](#default-order)
+    - [Default order](#default-order)
     - [Joins using relationships](#joins-using-relationships)
     - [Eloquent whereHasIn macro](#eloquent-wherehasin-macro)
     - [Eloquent whereLike macro](#eloquent-wherelike-macro)
@@ -44,14 +44,12 @@ DB::table('appartements')->orderByNatural('numero', 'desc')->get();
 DB::table('appartements')->orderByNaturalDesc('numero')->get();
 ```
 
-### ~~Default order~~
+### Default order
 
-**Deprecated**
+Although we no longer recommend using this global scope, we leave it for compatibility reasons regarding older applications.
+Indeed, this scope, as it automatically applies an orderBy clause, can cause performance problems on certain queries. For example, if it is applied to a relation that is itself used in a `whereHas()`.
 
-**The `DefaultOrderScope()` global scope should no longer be used, it has been deprecated since version 5.0.0; it will be removed in next major release. Please implement a dedicated local scope instead. For example something like `scopeOrdered()`.**
-
-Add the global scope `DefaultOrderScope` to the model if you want to have select
-results automatically sorted:
+Add the global scope `DefaultOrderScope` to the model if you want to have select results automatically sorted:
 
 ```php
 use Axn\Illuminate\Database\Eloquent\DefaultOrderScope;

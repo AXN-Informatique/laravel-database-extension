@@ -7,18 +7,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-/**
- * @deprecated in 5.0.0
- */
 class DefaultOrderScope implements Scope
 {
     /**
      * Constructor.
      */
-    public function __construct(protected array $orders)
-    {
-        trigger_error('The DefaultOrderScope() global scope should no longer be used, it has been deprecated since version 5.0.0; please implement a dedicated ordered() local scope instead.', E_USER_DEPRECATED);
-    }
+    public function __construct(protected array $orders) {}
 
     /**
      * Apply default "order by" clauses on query.

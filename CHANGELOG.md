@@ -1,6 +1,11 @@
 Changelog
 =========
 
+5.0.2 (2025-06-03)
+------------------
+
+- Undeprecated `DefaultOrderScope` for older applications.
+
 5.0.1 (2025-05-06)
 ------------------
 
