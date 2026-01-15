@@ -1,6 +1,11 @@
 Changelog
 =========
 
+5.0.3 (2026-01-15)
+------------------
+
+- Added documentation folder for Savane integration
+
 5.0.2 (2025-06-03)
 ------------------
 
