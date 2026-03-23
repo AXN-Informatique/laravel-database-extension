@@ -17,13 +17,10 @@ class JoinRelBuilder
     /**
      * Main model instance + related models instances
      *
-     * @var array[Model]
+     * @var array<string, Model>
      */
-    protected $models = [];
+    protected array $models = [];
 
-    /**
-     * Constructor.
-     */
     public function __construct(Model $model)
     {
         $this->models[$model->getTable()] = $model;
@@ -31,11 +28,15 @@ class JoinRelBuilder
 
     /**
      * Apply a join clause on a query using an Eloquent relationship.
-     *
-     * @param  string|Closure|null  $alias
      */
-    public function apply(Builder $query, string $relationName, $alias = null, ?Closure $callback = null, string $type = 'inner', bool $withTrashed = false): void
-    {
+    public function apply(
+        Builder $query,
+        string $relationName,
+        string|Closure|null $alias = null,
+        ?Closure $callback = null,
+        string $type = 'inner',
+        bool $withTrashed = false
+    ): void {
         if (str_contains($relationName, '.')) {
             [$parentAlias, $relationName] = explode('.', $relationName);
         } else {

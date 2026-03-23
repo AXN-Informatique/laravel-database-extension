@@ -9,10 +9,9 @@ use Illuminate\Database\Eloquent\Scope;
 
 class DefaultOrderScope implements Scope
 {
-    /**
-     * Constructor.
-     */
-    public function __construct(protected array $orders) {}
+    public function __construct(
+        protected readonly array $orders
+    ) {}
 
     /**
      * Apply default "order by" clauses on query.

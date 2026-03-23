@@ -6,7 +6,7 @@ Changelog
 
 - Added support for Laravel 13
 - Added Laravel Boost assets (guidelines and skill)
-- Updated dev dependencies
+- Modernized codebase with native type declarations and readonly property
 
 
 5.0.3 (2026-01-15)
