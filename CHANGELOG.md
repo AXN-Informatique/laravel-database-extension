@@ -1,6 +1,14 @@
 Changelog
 =========
 
+5.1.0 (2026-03-23)
+------------------
+
+- Added support for Laravel 13
+- Added Laravel Boost assets (guidelines and skill)
+- Updated dev dependencies
+
+
 5.0.3 (2026-01-15)
 ------------------
 
