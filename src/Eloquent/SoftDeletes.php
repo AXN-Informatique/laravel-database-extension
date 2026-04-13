@@ -13,10 +13,7 @@ trait SoftDeletes
      * Like "withoutTrashed()" but with the ability of excepting some records
      * (these records will be retrieved even if they are trashed).
      */
-    public function scopeWithoutTrashedExcept(
-        Builder $query,
-        int|array|null $exceptId = null
-    ): void {
+    public function scopeWithoutTrashedExcept(Builder $query, $exceptId = null): void {
         $query->where(function () use ($query, $exceptId): void {
             $query
                 ->withoutTrashed()

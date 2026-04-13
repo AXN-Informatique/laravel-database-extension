@@ -1,6 +1,12 @@
 Changelog
 =========
 
+5.1.1 (2026-04-13)
+------------------
+
+- Removed type declaration on `scopeWithoutTrashedExcept()` parameter to restore backward compatibility
+
+
 5.1.0 (2026-03-23)
 ------------------
 
