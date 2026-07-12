@@ -1,6 +1,12 @@
 Changelog
 =========
 
+5.1.2 (2026-07-12)
+------------------
+
+- Slimmed Boost guidelines to pointer + critical pitfalls (details covered by the skill)
+
+
 5.1.1 (2026-04-13)
 ------------------
 
